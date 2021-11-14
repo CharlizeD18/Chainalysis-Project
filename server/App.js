@@ -1,11 +1,4 @@
 import express from 'express';
-
-// var Client = require('coinbase').Client;
-// var client = new Client({
-//   'apiKey': 'API KEY',
-//   'apiSecret': 'API SECRET',
-//   strictSSL:false 
-// });
 import fetch from 'node-fetch';
 import cors from 'cors';
 const app = express()
@@ -19,6 +12,9 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
+/*
+  Get all information from coinbase API then send this response data to the front-end.
+*/
 app.get('/coinbase', async (req, res) => {
   var response_data = {};
   const bitcoin_price_res = await fetch(`${COINBASE_BASE_URL}/prices/BTC-USD/buy`);
@@ -37,10 +33,12 @@ app.get('/coinbase', async (req, res) => {
   const eth_sell_data = await eth_sell_res.json();
   response_data["eth_sell"] = eth_sell_data.data.amount;
 
-  console.log(response_data);
   res.send(response_data)
 })
 
+/*
+  Get all information from Kraken API then send this response data to the front-end.
+*/
 app.get('/kraken', async (req, res) => {
   var response_data = {};
   const bitcoin_price_res = await fetch(`${BLOCKCHAIN_BASE_URL}public/Ticker?pair=XBTUSD`);
@@ -50,14 +48,13 @@ app.get('/kraken', async (req, res) => {
 
   const eth_price_res = await fetch(`${BLOCKCHAIN_BASE_URL}public/Ticker?pair=ETHUSD`);
   const eth_data = await eth_price_res.json();
-  console.log(eth_data);
   response_data["eth_buy"] = eth_data.result.XETHZUSD.a[0];
   response_data["eth_sell"] = eth_data.result.XETHZUSD.b[0];
 
-  console.log(response_data);
   res.send(response_data)
 })
 
+/* This app listens for HTTP Requestions from the port specified above */
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`App listening at http://localhost:${port}`)
 })
