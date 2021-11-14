@@ -28,13 +28,13 @@ function App() {
   /* 
     Each state is a 2 element array where the first element contains the buy price
     and the second element contains the sell price.
-   */
+  */
   const [coinbasePrice, setCoinbasePrice] = useState({});
   const [krakenPrice, setKrakenPrice] = useState({});
 
   /*
-  Get the buy and sell prices when the page is refreshed from the backend.
-*/
+    Get the buy and sell prices when the page is refreshed from the backend.
+  */
   useEffect(() => {
     // GET request using axios inside useEffect React hook
     axios.get('http://localhost:3500/coinbase')
